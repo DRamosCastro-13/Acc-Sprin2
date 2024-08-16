@@ -45,6 +45,6 @@ public class TaskController {
 
         taskService.saveTask(task);
 
-        return new ResponseEntity<>("Task created succesfully", HttpStatus.CREATED);
+        return new ResponseEntity<>("Task created successfully", HttpStatus.CREATED);
     }
 }
