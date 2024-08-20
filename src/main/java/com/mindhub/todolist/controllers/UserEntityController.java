@@ -48,21 +48,6 @@ public class UserEntityController {
         return new ResponseEntity<>(userEntityService.getAllUsersDTO(), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createUserEntity(
-            @RequestBody NewUserEntityDTO newUserEntity
-            ){
-        if(userEntityService.existsByEmail(newUserEntity.email())){
-            return new ResponseEntity<>("This email is already in use", HttpStatus.FORBIDDEN);
-        }
-
-        UserEntity userEntity = new UserEntity(newUserEntity.username(), passwordEncoder.encode(newUserEntity.password()),
-                newUserEntity.email());
-        userEntity.setRole(RoleType.USER);
-        userEntityService.saveUserEntity(userEntity);
-
-        return new ResponseEntity<>("User created", HttpStatus.CREATED);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id,
