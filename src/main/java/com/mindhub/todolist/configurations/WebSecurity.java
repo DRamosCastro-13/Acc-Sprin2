@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
-
+/*
 @Configuration
 @EnableWebSecurity
 public class WebSecurity {
@@ -66,3 +66,4 @@ public class WebSecurity {
     } // Cada que se trata de iniciar sesión o pase algo que no salga bien se generan flags
     //Cuando el inicio de sesión es exitoso el método borra esos flags
 }
+*/

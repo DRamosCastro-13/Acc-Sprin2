@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+/*
 @Configuration
 public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
 
@@ -37,3 +37,4 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
+*/
