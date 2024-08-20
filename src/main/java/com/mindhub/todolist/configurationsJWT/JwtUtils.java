@@ -2,7 +2,6 @@ package com.mindhub.todolist.configurationsJWT;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class JwtUtils {
@@ -23,13 +24,19 @@ public class JwtUtils {
         this.secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
     }
 
-    public String generateToken(String username) { //genera el token
+    public String generateToken(String username, Map<String, Object> claims) { //genera el token
         return Jwts.builder() //patrón builder
                 .subject(username) //subject: algo único de cada user, ej: email
                 .issuedAt(new Date()) //fecha actual
                 .expiration(new Date(System.currentTimeMillis() + expiration)) //fecha de expiración
                 .signWith(secretKey) //firma
                 .compact(); //compacta
+    }
+
+    public String generateClaims(String username){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("rol", "rol");
+        return generateToken(username, claims);
     }
 
     public String extractUsername(String token) {
