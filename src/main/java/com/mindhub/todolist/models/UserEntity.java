@@ -11,7 +11,13 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username, password, email;
+    private String username, password;
+
+    @Column(unique = true)
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    private RoleType role = RoleType.USER;
 
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
@@ -57,6 +63,14 @@ public class UserEntity {
 
     public Set<Task> getTasks() {
         return tasks;
+    }
+
+    public RoleType getRole() {
+        return role;
+    }
+
+    public void setRole(RoleType role) {
+        this.role = role;
     }
 
     public void addTask(Task task) {
