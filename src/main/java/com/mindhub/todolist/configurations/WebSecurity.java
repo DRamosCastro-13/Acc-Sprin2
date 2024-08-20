@@ -24,7 +24,10 @@ public class WebSecurity {
         http.authorizeHttpRequests( authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry //Autorización
                         .requestMatchers("/index.html").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/userEntity/all").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/userEntity/all", "/api/userEntity/{id}").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/userEntity/{id}").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/userEntity").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/task").hasAnyAuthority("ADMIN", "USER")
                 )
                 .headers( httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::sameOrigin

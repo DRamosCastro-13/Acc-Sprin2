@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,15 +31,16 @@ public class TaskController {
         return ResponseEntity.ok(taskDTO);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping
     public ResponseEntity<?> createTaskByUserId(
-            @PathVariable Long id, //del user
+            Authentication authentication,
             @RequestBody NewTaskDTO newTaskDTO
             ){
-        if(userEntityService.findById(id) == null){
+        UserEntity user = userEntityService.getAuthenticatedUser(authentication.getName());
+
+        if(user.getId() == null){
             return new ResponseEntity<>("User id not found", HttpStatus.NOT_FOUND);
         }
-        UserEntity user = userEntityService.findById(id);
 
         Task task = new Task(newTaskDTO.title(), newTaskDTO.description(), newTaskDTO.status());
         user.addTask(task);

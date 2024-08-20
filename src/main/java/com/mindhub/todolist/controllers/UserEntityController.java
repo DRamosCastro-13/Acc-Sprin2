@@ -25,8 +25,15 @@ public class UserEntityController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserEntityDTO> getUserEntityById(@PathVariable Long id){
-        UserEntity userEntity = userEntityService.findById(id);
+    public ResponseEntity<?> getUserEntityById(
+            Authentication authentication,
+            @PathVariable Long id){
+        UserEntity userEntity = userEntityService.getAuthenticatedUser(authentication.getName());
+
+        if(userEntity.getRole() != RoleType.ADMIN){
+            return new ResponseEntity<>("You don't have permission to complete this request",HttpStatus.FORBIDDEN);
+        }
+
         UserEntityDTO userEntityDTO = new UserEntityDTO(userEntity);
         return ResponseEntity.ok(userEntityDTO);
     }
@@ -35,7 +42,7 @@ public class UserEntityController {
     public ResponseEntity<?> getAllUsers(Authentication authentication){
         UserEntity admin = userEntityService.getAuthenticatedUser(authentication.getName());
         if(admin.getRole() != RoleType.ADMIN){
-            return new ResponseEntity<>("You don't have permission to complete this request",HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("You don't have permission to complete this request", HttpStatus.FORBIDDEN);
         }
 
         return new ResponseEntity<>(userEntityService.getAllUsersDTO(), HttpStatus.OK);
@@ -49,10 +56,33 @@ public class UserEntityController {
             return new ResponseEntity<>("This email is already in use", HttpStatus.FORBIDDEN);
         }
 
-        UserEntity userEntity = new UserEntity(newUserEntity.username(), newUserEntity.password(), newUserEntity.email());
-
+        UserEntity userEntity = new UserEntity(newUserEntity.username(), passwordEncoder.encode(newUserEntity.password()),
+                newUserEntity.email());
+        userEntity.setRole(RoleType.USER);
         userEntityService.saveUserEntity(userEntity);
 
         return new ResponseEntity<>("User created", HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id,
+                                        Authentication authentication){
+
+        UserEntity admin = userEntityService.getAuthenticatedUser(authentication.getName());
+
+        if(admin.getRole() != RoleType.ADMIN){
+            return new ResponseEntity<>("You don't have permission to complete this request", HttpStatus.FORBIDDEN);
+        }
+
+        UserEntity userTBD = userEntityService.findById(id);
+
+        if(id == null){
+            return new ResponseEntity<>("Invalid user ID", HttpStatus.NOT_FOUND);
+        }
+
+        userTBD.setActive(false);
+        userEntityService.saveUserEntity(userTBD);
+
+        return new ResponseEntity<>("Client successfully deleted", HttpStatus.OK);
     }
 }

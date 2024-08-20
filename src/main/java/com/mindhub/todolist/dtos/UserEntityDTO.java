@@ -8,10 +8,13 @@ public class UserEntityDTO {
 
     private String username, email;
 
+    private Boolean active;
+
     public UserEntityDTO(UserEntity userEntity){
         this.id = userEntity.getId();
         this.username = userEntity.getUsername();
         this.email = userEntity.getEmail();
+        this.active = userEntity.getActive();
     }
 
     public Long getId() {
@@ -25,4 +28,6 @@ public class UserEntityDTO {
     public String getEmail() {
         return email;
     }
+
+    public Boolean getActive(){return active;}
 }

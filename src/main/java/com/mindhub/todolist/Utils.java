@@ -26,7 +26,7 @@ public class Utils {
             user.setRole(RoleType.USER);
             userEntityRepository.save(user);
 
-            Task task1 = new Task("Finish Sprint", "Work on current srpint", TaskStatus.PENDING);
+            Task task1 = new Task("Finish Sprint", "Work on current sprint", TaskStatus.PENDING);
             user.addTask(task1);
             taskRepository.save(task1);
 

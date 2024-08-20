@@ -19,6 +19,8 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private RoleType role = RoleType.USER;
 
+    private Boolean active = true;
+
     @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
@@ -71,6 +73,14 @@ public class UserEntity {
 
     public void setRole(RoleType role) {
         this.role = role;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public void addTask(Task task) {
