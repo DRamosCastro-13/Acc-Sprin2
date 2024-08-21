@@ -1,6 +1,7 @@
 package com.mindhub.todolist.services.impl;
 
 import com.mindhub.todolist.models.Task;
+import com.mindhub.todolist.models.UserEntity;
 import com.mindhub.todolist.repositories.TaskRepository;
 import com.mindhub.todolist.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Task findByUserEntityAndId(UserEntity userEntity, Long id) {
+        return taskRepository.findByUserEntityAndId(userEntity, id);
+    }
+
+    @Override
     public void saveTask(Task task) {
         taskRepository.save(task);
     }
+
 }

@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers("/api/auth/**", "index.html").permitAll() // Allow public access to specific endpoints
                                 .requestMatchers( "/api/userEntity/all", "/api/userEntity/{id}", "/api/userEntity/{id}").hasAuthority("ADMIN")
-                                .requestMatchers("/api/task").hasAnyAuthority("ADMIN", "USER")
+                                .requestMatchers("/api/task/**").hasAnyAuthority("ADMIN", "USER")
                                 .anyRequest().denyAll() // All other requests will be denied
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
