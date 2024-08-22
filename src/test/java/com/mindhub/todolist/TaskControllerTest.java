@@ -24,6 +24,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
@@ -32,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TaskController.class)
+@AutoConfigureMockMvc
 public class TaskControllerTest {
 
     @Autowired
@@ -43,13 +48,20 @@ public class TaskControllerTest {
     @MockBean
     private UserEntityService userEntityService;
 
+    @MockBean
+    private JwtUtils jwtUtils;
+
     @Test
     public void testCreateTask() throws Exception {
         NewTaskDTO newTaskDTO = new NewTaskDTO("Sample Title", "Description", TaskStatus.PENDING);
+/*
+        // Mock the authenticated user
+        UserEntity validUser = new UserEntity("username", "password", "testuser@example.com");
+        when(userEntityService.getAuthenticatedUser(anyString())).thenReturn(validUser);*/
 
         mockMvc.perform(post("/api/task")
-                        .contentType(MediaType.APPLICATION_JSON) // Set content type
-                        .content(new ObjectMapper().writeValueAsString(newTaskDTO))) // Use ObjectMapper to convert DTO to JSON
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(newTaskDTO)))
                 .andExpect(status().isCreated());
     }
 }
