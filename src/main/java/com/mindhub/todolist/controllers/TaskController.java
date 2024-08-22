@@ -36,6 +36,11 @@ public class TaskController {
         }
 
         Task task = taskService.findTaskById(id);
+
+        if(task == null){
+            return new ResponseEntity<>("Unable to locate task", HttpStatus.NOT_FOUND);
+        }
+
         TaskDTO taskDTO = new TaskDTO(task);
         return ResponseEntity.ok(taskDTO);
     }
@@ -51,9 +56,18 @@ public class TaskController {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        if(newTaskDTO == null){
-            return new ResponseEntity<>("Please complete the information to add a new task", HttpStatus.FORBIDDEN);
+        if(newTaskDTO.title().isBlank()){
+            return new ResponseEntity<>("Please add a title to create a new task", HttpStatus.FORBIDDEN);
         }
+
+        if(newTaskDTO.description().isBlank()){
+            return new ResponseEntity<>("Please add a description to create a new task", HttpStatus.FORBIDDEN);
+        }
+
+        if(newTaskDTO.status().toString().isBlank()){
+            return new ResponseEntity<>("Please add a status to create a new task", HttpStatus.FORBIDDEN);
+        }
+
 
         Task task = new Task(newTaskDTO.title(), newTaskDTO.description(), newTaskDTO.status());
         user.addTask(task);
@@ -105,11 +119,6 @@ public class TaskController {
 
         if (task == null) {
             return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
-        }
-
-
-        if (!task.getUserEntity().equals(user)) {
-            return new ResponseEntity<>("You are not authorized to delete this task", HttpStatus.FORBIDDEN);
         }
 
         taskService.deleteTask(task);

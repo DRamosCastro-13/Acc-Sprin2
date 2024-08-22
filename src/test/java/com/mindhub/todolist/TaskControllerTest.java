@@ -30,7 +30,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-/*
+
 @WebMvcTest(TaskController.class)
 public class TaskControllerTest {
 
@@ -52,4 +52,4 @@ public class TaskControllerTest {
                         .content(new ObjectMapper().writeValueAsString(newTaskDTO))) // Use ObjectMapper to convert DTO to JSON
                 .andExpect(status().isCreated());
     }
-}*/
+}
