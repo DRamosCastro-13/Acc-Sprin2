@@ -8,6 +8,10 @@ import com.mindhub.todolist.models.TaskStatus;
 import com.mindhub.todolist.models.UserEntity;
 import com.mindhub.todolist.services.TaskService;
 import com.mindhub.todolist.services.UserEntityService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.HttpStatus;
@@ -26,6 +30,14 @@ public class TaskController {
     private UserEntityService userEntityService;
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Get a task by ID", description = "Retrieves a task belonging to the authenticated user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task found"),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid task ID"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
+            @ApiResponse(responseCode = "403", description = "Forbidden, user does not own the task")
+    })
     public ResponseEntity<?> getTaskById(
             Authentication authentication,
             @PathVariable Long id){ //del task
@@ -46,6 +58,15 @@ public class TaskController {
     }
 
     @PostMapping
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Create a new task", description = "Creates a new task for the authenticated user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Task created successfully"),
+            @ApiResponse(responseCode = "403", description
+                    = "Bad request, invalid task data"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
     public ResponseEntity<?> createTask(
             Authentication authentication,
             @RequestBody NewTaskDTO newTaskDTO
@@ -57,15 +78,15 @@ public class TaskController {
         }
 
         if(newTaskDTO.title().isBlank()){
-            return new ResponseEntity<>("Please add a title to create a new task", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Bad request, invalid task data", HttpStatus.FORBIDDEN);
         }
 
         if(newTaskDTO.description().isBlank()){
-            return new ResponseEntity<>("Please add a description to create a new task", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Bad request, invalid task data", HttpStatus.FORBIDDEN);
         }
 
         if(newTaskDTO.status().toString().isBlank()){
-            return new ResponseEntity<>("Please add a status to create a new task", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Bad request, invalid task data", HttpStatus.FORBIDDEN);
         }
 
 
@@ -77,6 +98,14 @@ public class TaskController {
     }
 
     @PutMapping
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Update task status", description = "Updates the status of a task belonging to the authenticated user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid task ID or status"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
+            @ApiResponse(responseCode = "403", description = "Forbidden, user does not own the task")
+    })
     public ResponseEntity<?> updateTaskStatus(
             Authentication authentication,
             @RequestParam Long id,
@@ -85,17 +114,17 @@ public class TaskController {
         UserEntity userEntity = userEntityService.getAuthenticatedUser(authentication.getName());
 
         if(userEntity == null){
-            return new ResponseEntity<>("Please login to complete request", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Unauthorized, authentication required", HttpStatus.UNAUTHORIZED);
         }
 
         Task task = taskService.findByUserEntityAndId(userEntity, id);
 
         if(task == null){
-            return new ResponseEntity<>("Unable to locate task", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Bad request, invalid task ID or status", HttpStatus.BAD_REQUEST);
         }
 
         if(status.toString().equals(task.getStatus().toString())){
-            return new ResponseEntity<>("You need to enter a new status to update it", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("You need to enter a new status to update it", HttpStatus.BAD_REQUEST);
         }
 
         task.setStatus(status);
@@ -105,6 +134,14 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Delete a task by ID", description = "Deletes a task belonging to the authenticated user.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid task ID"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
+            @ApiResponse(responseCode = "403", description = "Forbidden, user does not own the task")
+    })
     public ResponseEntity<?> deleteTaskById(
             Authentication authentication,
             @PathVariable Long id

@@ -17,7 +17,7 @@ public class Utils {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-  /*
+
     @Bean
     public CommandLineRunner initData(UserEntityRepository userEntityRepository, TaskRepository taskRepository){
         return args -> {
@@ -36,5 +36,5 @@ public class Utils {
             userEntityRepository.save(admin);
 
         };
-    }*/
+    }
 }

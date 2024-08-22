@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.*;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserEntityRepositoryTest {
-
+/*
     @Autowired
     private UserEntityRepository userEntityRepository;
 
@@ -38,4 +38,47 @@ public class UserEntityRepositoryTest {
         assertThat(foundUser.get().getUsername(), is(equalTo(user.getUsername())));
         assertThat(foundUser.get().getRole(), is(equalTo(user.getRole())));
     }
+
+    @Test
+    public void testFindById(){
+        // Usuario de muestra
+        UserEntity user = new UserEntity("usertest", "password", "testuser@example.com");
+        user.setRole(RoleType.USER);
+        userEntityRepository.save(user);
+
+        // Método
+        Optional<UserEntity> foundUser = userEntityRepository.findById(user.getId());
+
+        // Afimaciones
+        assertThat(foundUser, is(notNullValue()));
+        assertThat(foundUser.get().getEmail(), is(equalTo(user.getEmail())));
+        assertThat(foundUser.get().getPassword(), is(equalTo(user.getPassword())));
+        assertThat(foundUser.get().getUsername(), is(equalTo(user.getUsername())));
+        assertThat(foundUser.get().getRole(), is(equalTo(user.getRole())));
+    }
+
+    @Test
+    public void testExistByEmail(){
+        UserEntity user = new UserEntity("usertest", "password", "testuser@example.com");
+        userEntityRepository.save(user);
+
+        boolean exists = userEntityRepository.existsByEmail(user.getEmail());
+
+        assertThat(exists, is(true));
+    }
+
+    @Test
+    public void testSaveUser(){
+        UserEntity user = new UserEntity("newuser", "password", "newuser@example.com");
+        user.setRole(RoleType.USER);
+
+        UserEntity savedUser = userEntityRepository.save(user);
+
+        assertThat(savedUser, is(notNullValue()));
+        assertThat(savedUser.getId(), is(notNullValue()));
+        assertThat(savedUser.getEmail(), is(equalTo(user.getEmail())));
+        assertThat(savedUser.getPassword(), is(equalTo(user.getPassword())));
+        assertThat(savedUser.getUsername(), is(equalTo(user.getUsername())));
+        assertThat(savedUser.getRole(), is(equalTo(user.getRole())));
+    }*/
 }

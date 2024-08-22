@@ -5,6 +5,10 @@ import com.mindhub.todolist.dtos.UserEntityDTO;
 import com.mindhub.todolist.models.RoleType;
 import com.mindhub.todolist.models.UserEntity;
 import com.mindhub.todolist.services.UserEntityService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +29,14 @@ public class UserEntityController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Get a user entity by ID", description = "Retrieves a user entity by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User entity found"),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid user ID"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
+            @ApiResponse(responseCode = "403", description = "Forbidden, user does not have admin privileges")
+    })
     public ResponseEntity<?> getUserEntityById(
             Authentication authentication,
             @PathVariable Long id){
@@ -39,6 +51,12 @@ public class UserEntityController {
     }
 
     @GetMapping("/all")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Get all user entities", description = "Retrieves a list of all user entities.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of user entities retrieved"),
+            @ApiResponse(responseCode = "403", description = "Forbidden, user does not have admin privileges")
+    })
     public ResponseEntity<?> getAllUsers(Authentication authentication){
         UserEntity admin = userEntityService.getAuthenticatedUser(authentication.getName());
         if(admin.getRole() != RoleType.ADMIN){
@@ -50,6 +68,14 @@ public class UserEntityController {
 
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Delete a user", description = "Deletes a user by its ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User entity deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Bad request, invalid user ID"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
+            @ApiResponse(responseCode = "403", description = "Forbidden, user does not have admin privileges")
+    })
     public ResponseEntity<String> deleteUser(
             @PathVariable Long id,
             Authentication authentication
