@@ -9,5 +9,7 @@ public interface TaskService {
 
     void saveTask(Task task);
 
+    void  deleteTask(Task task);
+
     Task findByUserEntityAndId(UserEntity userEntity, Long id);
 }

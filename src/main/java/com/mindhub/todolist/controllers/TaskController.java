@@ -89,4 +89,30 @@ public class TaskController {
 
         return new ResponseEntity<>("Task updated successfully", HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTaskById(
+            Authentication authentication,
+            @PathVariable Long id
+            ){
+        UserEntity user = userEntityService.getAuthenticatedUser(authentication.getName());
+
+        if (user == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+
+        Task task = taskService.findTaskById(id);
+
+        if (task == null) {
+            return new ResponseEntity<>("Task not found", HttpStatus.NOT_FOUND);
+        }
+
+
+        if (!task.getUserEntity().equals(user)) {
+            return new ResponseEntity<>("You are not authorized to delete this task", HttpStatus.FORBIDDEN);
+        }
+
+        taskService.deleteTask(task);
+        return new ResponseEntity<>("Task deleted successfully", HttpStatus.OK);
+    }
 }

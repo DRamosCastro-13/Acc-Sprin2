@@ -52,5 +52,10 @@ public class UserEntityServiceImpl implements UserEntityService {
         return new UserEntityDTO(getAuthenticatedUser(email));
     }
 
+    @Override
+    public void deleteUserEntity(UserEntity userEntity) {
+        userEntityRepository.delete(userEntity);
+    }
+
 
 }

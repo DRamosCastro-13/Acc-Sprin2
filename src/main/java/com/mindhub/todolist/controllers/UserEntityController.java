@@ -50,24 +50,24 @@ public class UserEntityController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id,
-                                        Authentication authentication){
-
+    public ResponseEntity<String> deleteUser(
+            @PathVariable Long id,
+            Authentication authentication
+            ){
         UserEntity admin = userEntityService.getAuthenticatedUser(authentication.getName());
 
-        if(admin.getRole() != RoleType.ADMIN){
+        if (admin == null || admin.getRole() != RoleType.ADMIN) {
             return new ResponseEntity<>("You don't have permission to complete this request", HttpStatus.FORBIDDEN);
         }
 
-        UserEntity userTBD = userEntityService.findById(id);
+        UserEntity userToDelete = userEntityService.findById(id);
 
-        if(id == null){
-            return new ResponseEntity<>("Invalid user ID", HttpStatus.NOT_FOUND);
+        if (userToDelete == null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
 
-        userTBD.setActive(false);
-        userEntityService.saveUserEntity(userTBD);
+        userEntityService.deleteUserEntity(userToDelete);
 
-        return new ResponseEntity<>("Client successfully deleted", HttpStatus.OK);
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
     }
 }

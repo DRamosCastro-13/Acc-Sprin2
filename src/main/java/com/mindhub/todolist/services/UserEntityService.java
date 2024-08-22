@@ -2,6 +2,7 @@ package com.mindhub.todolist.services;
 
 import com.mindhub.todolist.dtos.UserEntityDTO;
 import com.mindhub.todolist.models.UserEntity;
+import org.apache.catalina.User;
 
 import java.util.List;
 
@@ -21,4 +22,5 @@ public interface UserEntityService {
 
     UserEntityDTO getAuthenticatedUserDTO(String email);
 
+    void deleteUserEntity(UserEntity userEntity);
 }
