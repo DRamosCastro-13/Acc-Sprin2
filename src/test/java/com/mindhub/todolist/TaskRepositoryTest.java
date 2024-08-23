@@ -48,7 +48,10 @@ public class TaskRepositoryTest {
 
         Task foundTask = taskRepository.findByUserEntityAndId(user, task.getId());
 
-        assertThat(foundTask, is(equalTo(task)));
         assertThat(foundTask, is(notNullValue()));
+        assertThat(foundTask.getTitle(), is(equalTo(task.getTitle())));
+        assertThat(foundTask.getDescription(), is(equalTo(task.getDescription()))));
+        assertThat(foundTask.getStatus(), is(equalTo(task.getStatus())));
+        assertThat(foundTask.getUserEntity(), is(equalTo(user)));
     }
 }
