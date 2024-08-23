@@ -16,9 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class TaskRepositoryTest {
-/*
     @Autowired
     private TaskRepository taskRepository;
 
@@ -51,8 +49,7 @@ public class TaskRepositoryTest {
 
         Task foundTask = taskRepository.findByUserEntityAndId(user, task.getId());
 
-
         assertThat(foundTask, is(equalTo(task)));
         assertThat(foundTask, is(notNullValue()));
-    }*/
+    }
 }

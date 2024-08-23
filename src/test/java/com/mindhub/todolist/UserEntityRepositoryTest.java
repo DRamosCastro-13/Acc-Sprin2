@@ -2,7 +2,9 @@ package com.mindhub.todolist;
 
 import com.mindhub.todolist.models.RoleType;
 import com.mindhub.todolist.models.UserEntity;
+import com.mindhub.todolist.services.UserEntityService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,14 +17,13 @@ import static org.hamcrest.Matchers.*;
 
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserEntityRepositoryTest {
-/*
     @Autowired
     private UserEntityRepository userEntityRepository;
 
+
     @Test
-    public void testFindByEmail(){
+    public void testFindByEmail() {
         // Usuario de muestra
         UserEntity user = new UserEntity("usertest", "password", "testuser@example.com");
         user.setRole(RoleType.USER);
@@ -40,7 +41,7 @@ public class UserEntityRepositoryTest {
     }
 
     @Test
-    public void testFindById(){
+    public void testFindById() {
         // Usuario de muestra
         UserEntity user = new UserEntity("usertest", "password", "testuser@example.com");
         user.setRole(RoleType.USER);
@@ -58,7 +59,7 @@ public class UserEntityRepositoryTest {
     }
 
     @Test
-    public void testExistByEmail(){
+    public void testExistByEmail() {
         UserEntity user = new UserEntity("usertest", "password", "testuser@example.com");
         userEntityRepository.save(user);
 
@@ -68,7 +69,7 @@ public class UserEntityRepositoryTest {
     }
 
     @Test
-    public void testSaveUser(){
+    public void testSaveUser() {
         UserEntity user = new UserEntity("newuser", "password", "newuser@example.com");
         user.setRole(RoleType.USER);
 
@@ -80,5 +81,6 @@ public class UserEntityRepositoryTest {
         assertThat(savedUser.getPassword(), is(equalTo(user.getPassword())));
         assertThat(savedUser.getUsername(), is(equalTo(user.getUsername())));
         assertThat(savedUser.getRole(), is(equalTo(user.getRole())));
-    }*/
+    }
+
 }
