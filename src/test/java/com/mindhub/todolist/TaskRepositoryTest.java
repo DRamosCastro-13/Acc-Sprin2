@@ -50,7 +50,7 @@ public class TaskRepositoryTest {
 
         assertThat(foundTask, is(notNullValue()));
         assertThat(foundTask.getTitle(), is(equalTo(task.getTitle())));
-        assertThat(foundTask.getDescription(), is(equalTo(task.getDescription()))));
+        assertThat(foundTask.getDescription(), is(equalTo(task.getDescription())));
         assertThat(foundTask.getStatus(), is(equalTo(task.getStatus())));
         assertThat(foundTask.getUserEntity(), is(equalTo(user)));
     }
