@@ -34,7 +34,7 @@ public class TaskController {
     @Operation(summary = "Get a task by ID", description = "Retrieves a task belonging to the authenticated user.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task found"),
-            @ApiResponse(responseCode = "400", description = "Bad request, invalid task ID"),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "401", description = "Unauthorized, authentication required"),
             @ApiResponse(responseCode = "403", description = "Forbidden, user does not own the task")
     })
