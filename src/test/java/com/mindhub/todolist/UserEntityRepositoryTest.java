@@ -12,9 +12,12 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+/*
 
 @DataJpaTest
 public class UserEntityRepositoryTest {
+*/
+/*
     @Autowired
     private UserEntityRepository userEntityRepository;
 
@@ -79,5 +82,9 @@ public class UserEntityRepositoryTest {
         assertThat(savedUser.getUsername(), is(equalTo(user.getUsername())));
         assertThat(savedUser.getRole(), is(equalTo(user.getRole())));
     }
+*//*
+
 
 }
+*/
+

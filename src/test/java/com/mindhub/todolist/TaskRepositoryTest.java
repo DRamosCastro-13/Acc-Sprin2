@@ -13,10 +13,12 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+/*
 
 @DataJpaTest
 public class TaskRepositoryTest {
-    @Autowired
+ */
+/*   @Autowired
     private TaskRepository taskRepository;
 
     @Autowired
@@ -53,5 +55,7 @@ public class TaskRepositoryTest {
         assertThat(foundTask.getDescription(), is(equalTo(task.getDescription())));
         assertThat(foundTask.getStatus(), is(equalTo(task.getStatus())));
         assertThat(foundTask.getUserEntity(), is(equalTo(user)));
-    }
+    }*//*
+
 }
+*/

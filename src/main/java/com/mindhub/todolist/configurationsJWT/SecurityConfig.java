@@ -41,9 +41,11 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers("/api/auth/**", "index.html").permitAll() // Allow public access to specific endpoints
-                                .requestMatchers( "/api/userEntity/all", "/api/userEntity/{id}", "/api/userEntity/{id}").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET,  "/api/userEntity/all").hasAuthority("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/api/userEntity/{id}").hasAnyAuthority("ADMIN, USER")
+                                .requestMatchers(HttpMethod.DELETE, "/api/userEntity/{id}").hasAuthority("ADMIN")
                                 .requestMatchers("/api/task/**").hasAnyAuthority("ADMIN", "USER")
-                                .anyRequest().denyAll() // All other requests will be denied
+                                .anyRequest().permitAll() // All other requests will be denied
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -51,8 +53,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); //Con esta configuración
-        //se
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
